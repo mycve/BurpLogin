@@ -9,7 +9,7 @@
   "login_config": {
     "url": "http://175.98.164.200:6001/login.action",
     "method": "post",
-    "isPayload": "false",
+    "isPayload": false,
     "data": {
       "username_field_name": "loginname",
       "password_field_name": "password",
