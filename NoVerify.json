@@ -9,7 +9,7 @@
   "login_config": {
     "url": "https://xss8.cc/log-dl/",
     "method": "post",
-    "isPayload": "false",
+    "isPayload": false,
     "data": {
       "username_field_name": "user",
       "password_field_name": "pwd",
