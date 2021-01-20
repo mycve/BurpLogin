@@ -1,0 +1,35 @@
+{
+  "name": "burpLogin",
+  "version": "1.0.0",
+  "author": "Hutututu",
+  "speed": 20,
+  "debug": "true",
+  "username_path": "username.txt",
+  "password_path": "password.txt",
+  "login_config": {
+    "url": "https://xss8.cc/log-dl/",
+    "method": "post",
+    "isPayload": "false",
+    "data": {
+      "username_field_name": "user",
+      "password_field_name": "pwd",
+      "remember": "1",
+      "token_field_name": "token",
+      "verify_field_name": "code"
+    },
+    "login_fail": {
+        "page_contain_str": ["登录失败","error","fail"],
+        "status": [403,404]
+    }
+  },
+  "verify_config": {
+    "enable": false,
+    "load_verify_code_url": "",
+    "verify_api": "https://code.dsaaaaaaaaaaaaaaaaaaaadwqdqdw101fre.tk:8081/api",
+    "post": {
+      "data": ""
+    },
+    "match_result": "{\"msg\":\"(.*?)\",\"status\":200}",
+    "verify_error_contain_str": ["验证码错误", "验证错误"]
+  }
+}
