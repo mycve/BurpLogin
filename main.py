@@ -78,9 +78,9 @@ class BurpLogin:
         req = None
         if method.upper() == "POST":
             if is_payload:
-                req = self.request.post(url=url, data=self.data)
-            else:
                 req = self.request.post(url=url, json=self.data)
+            else:
+                req = self.request.post(url=url, data=self.data)
         elif method.upper() == "GET":
             req = self.request.get(url=url, params=self.data)
 
@@ -113,17 +113,14 @@ class BurpLogin:
 
 
 if __name__ == '__main__':
-    print("""
-    一名小菜鸡er...
-    """)
     if len(sys.argv) == 1:
         print("请传入配置文路径")
         exit(0)
     file_path = sys.argv[1]
-
+    # file_path = 'Verify1.json'
     config = json.load(open(file_path, 'r', encoding='utf-8'))
     POOL = pool.Pool(config.get("speed"))
-    QUEUE = queue.Queue(200)
+    QUEUE = queue.Queue(2000)
 
     for e in range(config.get("speed")):
         POOL.apply_async(BurpLogin().run, args=(QUEUE,))
