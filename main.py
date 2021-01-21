@@ -3,6 +3,7 @@ import requests
 import json
 import base64
 import sys
+import random
 
 
 class BurpLogin:
@@ -12,8 +13,8 @@ class BurpLogin:
         self.request = requests.Session()
         self.request.headers.update({
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/87.0.4280.141 Safari/537.36",
-            "x-client-ip": "220.192.8.169",
-            "x-forwarded-for": "220.192.8.169"
+            "x-client-ip": "220.1.{}.{}".format(random.randint(1, 255), random.randint(1, 255)),
+            "x-forwarded-for": "220.1.{}.{}".format(random.randint(1, 255), random.randint(1, 255))
         })
         self.data = {}
         self.username_field_name = self.__config.get("login_config").get("data").get("username_field_name")
@@ -25,11 +26,15 @@ class BurpLogin:
         self.verify_enable = self.__config.get("verify_config").get("enable")
 
         for key in self.__config.get("login_config").get("data").keys():
-            if self.__config.get("login_config").get("data").get(key):
+            if key not in ['username_field_name', 'password_field_name', 'verify_field_name']:
+                self.data.update({
+                   key: self.__config.get("login_config").get("data").get(key)
+                })
+            else:
                 self.data.update({
                     self.__config.get("login_config").get("data").get(key): ''
                 })
-                self.data.pop(key)
+            self.data.pop(key)
 
     def run(self, handle_task_pool):
         """
@@ -99,6 +104,10 @@ class BurpLogin:
         return 1, req
 
     def verify(self):
+        """
+        执行验证请求图像，并识别
+        :return:
+        """
         image_content = self.request.get(self.load_verify_code_url).content
         image_base64 = base64.b64encode(image_content).decode("utf-8")
         payload = self.__config.get("verify_config").get("post")
