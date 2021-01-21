@@ -1,9 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding:utf8 -*-
 from gevent import pool, queue, monkey;monkey.patch_all()
 import requests
 import json
 import base64
 import sys
 import random
+import warnings
+warnings.filterwarnings('ignore')
 
 
 class BurpLogin:
@@ -11,6 +15,7 @@ class BurpLogin:
         if not hasattr(BurpLogin, '__config'):
             self.__config = BurpLogin.__config = config
         self.request = requests.Session()
+        self.request.verify = False
         self.request.headers.update({
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/87.0.4280.141 Safari/537.36",
             "x-client-ip": "220.1.{}.{}".format(random.randint(1, 255), random.randint(1, 255)),
@@ -34,7 +39,8 @@ class BurpLogin:
                 self.data.update({
                     self.__config.get("login_config").get("data").get(key): ''
                 })
-            self.data.pop(key)
+                self.data.pop(key)
+        print(self.data)
 
     def run(self, handle_task_pool):
         """
@@ -58,7 +64,7 @@ class BurpLogin:
                     login_out = "登录失败，" + verify_out
                 elif r == -1:
                     login_out = "登录失败，验证码错误"
-                print(login_out, req.request.body)
+                print(login_out, req.request.url, req.text)
             if r == 1:
                 print(req.request.body)
             if r == -1:
