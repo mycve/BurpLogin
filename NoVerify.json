@@ -1,6 +1,6 @@
 {
   "name": "burpLogin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Hutututu",
   "speed": 10,
   "username_path": "username.txt",
