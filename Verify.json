@@ -1,9 +1,8 @@
 {
   "name": "burpLogin",
   "version": "1.0.0",
-  "author": "Hutututu",
-  "speed": 20,
-  "debug": true,
+  "author": "Hututu",
+  "speed": 10,
   "username_path": "username.txt",
   "password_path": "password.txt",
   "login_config": {
@@ -13,7 +12,7 @@
     "data": {
       "username_field_name": "loginname",
       "password_field_name": "password",
-      "lang": "lang",
+      "token": "xxxxx",
       "verify_field_name": "checkcode"
     },
     "login_fail": {
@@ -29,6 +28,6 @@
       "data": ""
     },
     "match_result": "{\"msg\":\"(.*?)\",\"status\":200}",
-    "verify_error_contain_str": ["验证码错误", "验证错误","&#39564;&#35777;&#30721;"]
+    "verify_error_contain_str": ["验证码错误", "验证错误","&#39564;&#35777;&#30721;","验证码"]
   }
 }

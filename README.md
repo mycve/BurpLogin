@@ -22,6 +22,12 @@
     8. load_verify_code_url 是加载对方验证码的url
     9. verify_api是验证码识别接口的url，这里我用自己的，识别率很高，你也可以定义自己的，post字段内容就得换
 ---
+---
+### UpdateTime 2021/1/28 14：07
+    1. 增加日志输出log，美化以下console输出
+    2.对于获取验证码的源地址，增加头内容image判断，不是验证码（waf，反爬）异常退出
+    3.其他优化
+
 #### 目前密码都是明文提交，有的情况下是md5，自己可以将密码转换完成放到password.txt
 #### BUG慢慢慢慢慢慢慢慢来 v1.0.3
-#### LastUpdateTime 2021/1/21 14：14
+#### LastUpdateTime 2021/1/28 14：07
