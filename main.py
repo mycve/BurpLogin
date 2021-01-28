@@ -133,7 +133,7 @@ class BurpLogin:
         :return:
         """
         image_req = self.request.get(self.load_verify_code_url)
-        # assert image_req.headers.get('Content-Type').find('image') != -1, 'This is not image,check it or waf ??'
+        assert image_req.headers.get('Content-Type').find('image') != -1, 'This is not image,check it or waf ??'
         image_content = image_req.content
         image_base64 = base64.b64encode(image_content).decode("utf-8")
         payload = self.__config.get("verify_config").get("post")
