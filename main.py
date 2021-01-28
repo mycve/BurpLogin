@@ -173,12 +173,12 @@ if __name__ == '__main__':
     f_password = open(config.get('password_path'), 'r')
     for u in f_username:
         for p in f_password:
-            p = p.strip()
-            u = u.strip()
+            u = u.strip()  # 用户名
+            p = p.strip()  # 密码
             # p = md5(md5(md5(u+p)))
             try:
                 QUEUE.put([u.strip(), p])
-            except KeyboardInterrupt as e:
+            except (KeyboardInterrupt, Exception) as e:
                 SIGN = False
                 exit(0)
         f_password.seek(0)
