@@ -28,6 +28,7 @@
 
 ### UpdateTime 2021/1/28 20：07
     1. main.py 最下面有个 `# p = md5(md5(md5(u+p)))` 这个是 用户名+密码3次MD5，自己可以简单编辑对应的目标密码规则，并去掉前面的#
+    2. 补充说明，验证码获取增加image头判断，确定就是图片时候可以手动注释加 # 如：`assert image_req.headers.get...`-->`# assert image_req.headers.get...`
 ---
 ### UpdateTime 2021/1/28 14：07
     1. 增加日志输出log，美化以下console输出
