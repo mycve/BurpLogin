@@ -6,7 +6,7 @@
   "username_path": "username.txt",
   "password_path": "password.txt",
   "login_config": {
-    "url": "http://175.98.164.200:6001/login.action",
+    "url": "http://xxxxxxxxxxxxxx/login.action",
     "method": "post",
     "isPayload": false,
     "data": {

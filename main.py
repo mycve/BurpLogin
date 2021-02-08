@@ -119,7 +119,6 @@ class BurpLogin:
                 return 0, req  # 登录失败
         if req.status_code in login_fail.get("status"):
             return 0, req
-
         if self.__config.get("verify_config").get("enable"):
             for e in self.__config.get("verify_config").get("verify_error_contain_str"):
                 if req.text.find(e) != -1:
@@ -150,7 +149,7 @@ class BurpLogin:
 def status():
     while SIGN:
         print('[+] verify_code_fail:{}----login_fail:{}----login_success:{}'.format(VERIFY_FAIL_TOTAL, LOGIN_FAIL_TOTAL, LOGIN_SUCCESS_TOTAL), end='\r')
-        time.sleep(1)
+        time.sleep(0.5)
 
 
 def md5(_str):
