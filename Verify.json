@@ -23,7 +23,7 @@
   "verify_config": {
     "enable": true,
     "load_verify_code_url": "http://175.98.164.200:6001/test/img.jsp",
-    "verify_api": "https://code.dsaaaaaaaaaaaaaaaaaaaadwqdqdw101fre.tk:8081/api",
+    "verify_api": "https://code.dsaaaaaaaaaaaaaaaaaaaadwqdqdw101fre.tk:8443/api",
     "post": {
       "data": ""
     },

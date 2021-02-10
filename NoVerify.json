@@ -23,7 +23,7 @@
   "verify_config": {
     "enable": false,
     "load_verify_code_url": "",
-    "verify_api": "https://code.dsaaaaaaaaaaaaaaaaaaaadwqdqdw101fre.tk:8081/api",
+    "verify_api": "https://code.dsaaaaaaaaaaaaaaaaaaaadwqdqdw101fre.tk:8443/api",
     "post": {
       "data": ""
     },
